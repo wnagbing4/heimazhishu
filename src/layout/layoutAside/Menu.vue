@@ -1,14 +1,22 @@
+<!--
+ * @Author: 3396515303@qq.com 12267007+wangbing56@user.noreply.gitee.com
+ * @Date: 2024-06-20 10:51:27
+ * @LastEditors: 3396515303@qq.com 12267007+wangbing56@user.noreply.gitee.com
+ * @LastEditTime: 2024-06-20 14:34:43
+ * @FilePath: \vue-project\src\layout\layoutAside\Menu.vue
+ * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
+-->
 <script setup lang="ts">
-import type { MenuResponseType } from '@/api/workbench/types'
+import type { MenuResponseType } from "@/api/workbench/types";
 
 defineProps<{
-  menuList: MenuResponseType[]
-}>()
+  menuList: MenuResponseType[];
+}>();
 </script>
 <script lang="ts">
 export default {
-  name: 'MenuList'
-}
+  name: "MenuList",
+};
 </script>
 <template>
   <template v-for="item in menuList" :key="item.id">
@@ -29,7 +37,7 @@ export default {
             alt=""
           />
         </el-icon>
-        <span style="font-size: 10px">{{ item.title }}</span>
+        <span style="font-size: 15px">{{ item.title }}</span>
       </template>
     </el-menu-item>
     <!-- 当有子菜单时 -->
@@ -41,7 +49,7 @@ export default {
             :src="item.icon"
             alt=""
         /></el-icon>
-        <span style="font-size: 10px">{{ item.title }}</span>
+        <span style="font-size: 15px">{{ item.title }}</span>
       </template>
       <MenuList :menuList="item.children"></MenuList>
     </el-sub-menu>

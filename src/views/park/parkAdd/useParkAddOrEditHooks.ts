@@ -163,26 +163,33 @@ export const useParkAddHook = () => {
   // 添加逻辑
   const $router = useRouter()
   const $route = useRoute()
-  const { mode } = $route.query
+  const mode = $route.query.mode
   const handleAdd = async () => {
-    if (mode === 'add') {
-      const res = await addEnterpriseApi(formData.value)
-      if (res!.code === 10000) {
-        ElMessage.success('添加成功')
-      } else {
-        ElMessage.error(res!.msg)
-      }
-    } else {
+    console.log(mode, 'mode');
+
+    if (mode == 'edit') {
       delete formData.value.businessLicenseName
       delete formData.value.industryName
       delete formData.value.rent
       const res = await editOkEnterpriseApi(formData.value)
       console.log('res', res)
       if (res!.code === 10000) {
-        ElMessage.success('添加成功')
+        ElMessage.success('修改成功')
       } else {
         ElMessage.error(res!.msg)
       }
+
+    } else {
+      // console.log(formData.value, 'data')
+      const res = await addEnterpriseApi(formData.value);
+      console.log(res, 'tainjai');
+
+
+      // if (res!.code === 10000) {
+      //   ElMessage.success('添加成功')
+      // } else {
+      //   ElMessage.error(res!.msg)
+      // }
     }
     $router.go(-1)
   }

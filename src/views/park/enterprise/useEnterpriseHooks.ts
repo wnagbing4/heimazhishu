@@ -59,7 +59,6 @@ export const useBuildingHook = () => {
     // console.log('res', res)
     tableData.value = res?.data.rows
     total.value = res?.data.total
-    ElMessage.success('获取成功!')
   }
   InitBuilding()
   // 查询列表
@@ -81,6 +80,7 @@ export const useBuildingHook = () => {
             type: 'success',
             message: res!.msg
           })
+          InitBuilding()
         } else {
           ElMessage({
             type: 'error',
@@ -116,7 +116,7 @@ const handleAdd = () => {
   $router.push({
     path:"/park/enterprise/add",
     query:{
-      mode:JSON.stringify("add"),
+      mode:"add",
     }
   })
 }

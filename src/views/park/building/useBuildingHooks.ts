@@ -62,7 +62,6 @@ export const useBuildingHook = () => {
     // console.log('res', res)
     tableData.value = res?.data.rows
     total.value = res?.data.total
-    ElMessage.success('获取成功!')
   }
   InitBuilding()
   // 查询列表
