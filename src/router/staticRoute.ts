@@ -23,5 +23,9 @@ export const StaticRoutes: RouteRecordRaw[] = [
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: () => import("@/views/404/index.vue")
-  }
+  },
+  // {
+  //   path:'/table',
+  //   component:()=>import('@/views/table.vue')
+  // }
 ]

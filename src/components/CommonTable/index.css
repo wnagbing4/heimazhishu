@@ -1,0 +1,62 @@
+.common-table {
+  flex: 1;
+  height: 0;
+  padding: 0 24px 0;
+}
+
+.common-table .common-table__header {
+  padding-top: 16px;
+}
+
+.common-table .common-table__header :deep(.el-button) {
+  margin-bottom: 16px;
+  border-radius: 2px;
+  border: 1px solid #22b8d0;
+  color: #22b8d0;
+}
+
+.common-table .common-table__header :deep(.el-button).el-button--primary {
+  background-color: #22b8d0;
+  color: #fff;
+}
+
+.common-table :deep(.el-table) {
+  --el-table-header-bg-color: #f2f3f5;
+  --el-table-header-text-color: #1d2129;
+}
+
+.common-table :deep(.el-table) .cell {
+  white-space: nowrap;
+}
+
+.common-table :deep(.el-table) .el-table__cell {
+  height: 40px;
+  padding: 0;
+}
+
+.common-table :deep(.el-table) .el-button.el-button--primary {
+  --el-button-text-color: #22b8d0;
+}
+
+.common-table :deep(.el-table) .el-button.el-button--danger {
+  --el-button-text-color: #f53f3f;
+}
+
+.common-table .el-pagination {
+  justify-content: flex-end;
+  height: 52px;
+  align-items: flex-end;
+}
+
+.common-table .el-pagination .el-pagination__jumper-button {
+  border-radius: 2px;
+  background-color: #22b8d0;
+  color: white;
+  width: 60px;
+  height: 32px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 8px;
+  cursor: pointer;
+}

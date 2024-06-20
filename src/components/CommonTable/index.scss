@@ -1,0 +1,66 @@
+.common-table {
+    flex: 1;
+    height: 0;
+    padding: 0 24px 0;
+  
+    .common-table__header {
+      padding-top: 16px;
+      :deep(.el-button) {
+        margin-bottom: 16px;
+        border-radius: 2px;
+        border: 1px solid rgba(34, 184, 208, 1);
+        color: rgba(34, 184, 208, 1);
+        &.el-button--primary {
+          // --el-button-text-color: rgba(34, 184, 208, 1);
+          background-color: rgba(34, 184, 208, 1);
+          color: #fff;
+        }
+        // rgba(34, 184, 208, 1)
+      }
+    }
+  
+    :deep(.el-table) {
+      --el-table-header-bg-color: rgba(242, 243, 245, 1);
+      --el-table-header-text-color: rgba(29, 33, 41, 1);
+      .cell {
+        white-space: nowrap;
+      }
+      .el-table__cell {
+        height: 40px;
+        padding: 0;
+      }
+  
+      .el-button {
+        // height: 24px;
+        // font-size: 12px;
+        // padding: 0 12px;
+        &.el-button--primary {
+          --el-button-text-color: rgba(34, 184, 208, 1);
+        }
+        &.el-button--danger {
+          --el-button-text-color: rgba(245, 63, 63, 1);
+        }
+      }
+    }
+  
+    .el-pagination {
+      // padding-top: 20px;
+      // justify-content: flex-end;
+      justify-content: flex-end;
+      height: 52px;
+      align-items: flex-end;
+  
+      .el-pagination__jumper-button {
+        border-radius: 2px;
+        background-color: rgba(34, 184, 208, 1);
+        color: rgba(255, 255, 255, 1);
+        width: 60px;
+        height: 32px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-left: 8px;
+        cursor: pointer;
+      }
+    }
+  }
