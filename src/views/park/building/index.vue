@@ -1,74 +1,162 @@
-<script setup lang="ts">
-// 引入buildingHooks
-import type { BuildingResponseType } from '@/api/workbench/types';
-import { useBuildingHook } from './useBuildingHooks'
-// 引入dialog组件
-const Dialog = defineAsyncComponent(() => import("./Dialog.vue"))
-const {
-  tableConfig,
-  queryForm,
-  tableData,
-  total,
-  handleSearch,
-  handleDelete,
-  handleSizeChange,
-  handleCurrentChange,
-  InitBuilding
-} = useBuildingHook()
-
-// 子组件
-const DialogRef = ref<InstanceType<typeof Dialog>>()
-// 添加楼宇
-const handleAdd = () => {
-  DialogRef.value?.openDialog("add","添加楼宇")
-}
-// 编辑回填
-const handleEdit = (row: BuildingResponseType) => {
-  DialogRef.value?.openDialog("edit", "编辑楼宇", row)
-}
-</script>
 <template>
-  <el-card>
-    <!-- dialog -->
-     <Dialog ref="DialogRef" @refresh="InitBuilding"/>
-    <!-- 头部表单数据 -->
-    <el-form inline>
-      <el-form-item label="楼宇名称:">
-        <el-input
-          v-model="queryForm.name"
-          placeholder="请输入楼宇名称"
-        ></el-input>
+  <div class="boss">
+    <div class="top" style="display: flex">
+      <el-form-item label="楼宇名称:" style="max-width: 300px">
+        <el-input v-model="userch.name" placeholder="请输入楼宇名称" />
       </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click="handleSearch">查询</el-button>
-      </el-form-item>
-    </el-form>
-    <div style="margin: 15px 0">
-      <el-button type="primary" @click="handleAdd">添加楼宇</el-button>
+      <el-button type="primary" style="margin-left: 10px" @click="builist"
+        >查询</el-button
+      >
     </div>
-    <!-- 表格渲染 -->
-    <TableConfig v-bind="tableConfig" v-model="tableData">
-      <template #status="{ row }">
-        {{ row.status === 0 ? '空置中' : '租赁中' }}
-      </template>
-      <template #Controls="{ row }">
-        <el-button type="primary" link @click="handleEdit(row)">编辑</el-button>
-        <el-button type="primary" link @click="handleDelete(row)"
-          >删除</el-button
-        >
-      </template>
-    </TableConfig>
-    <!-- 分页渲染 -->
-    <el-row justify="end" style="margin-top: 20px;">
-      <el-pagination
-        :page-sizes="[5, 10, 20, 30]"
-        :background="true"
-        layout="total, sizes, prev, pager, next, jumper"
-        :total="total"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-      />
-    </el-row>
-  </el-card>
+    <el-divider style="padding: 0; margin: 0; margin-bottom: 15px" />
+    <el-button type="primary" @click="addBilding">添加楼宇</el-button>
+    <ICommonTable
+      ref="commonTableRef"
+      :data="state.data"
+      :page="state.page"
+      @size-change="sizeChangeHandle"
+      @current-change="currentChangeHandle"
+      @jumper-change="jumperChangeHandle"
+      @selection-change="selectionChangeHandle"
+      :key="state.commonTableKey"
+    >
+      <el-table-column prop="name" label="楼宇名称" />
+      <el-table-column prop="floors" label="层数" />
+      <el-table-column prop="area" label="在管面积(m²)" />
+      <el-table-column prop="propertyFeePrice" label="物业费(元/m²)" />
+      <el-table-column prop="status" label="状态">
+        <template #default="scoped">
+          <span v-if="scoped.row.status === 0">空置中</span>
+          <span v-if="scoped.row.status === 1">租赁中</span>
+        </template>
+      </el-table-column>
+
+      <el-table-column fixed="right" label="操作">
+        <template #default="scope">
+          <el-button link type="primary" size="small" @click="editBilding(scope.row)">
+            编辑
+          </el-button>
+          <el-button
+            link
+            type="primary"
+            size="small"
+            @click="deletabuilding(scope.row.id)"
+            >删除</el-button
+          >
+        </template>
+      </el-table-column>
+    </ICommonTable>
+  </div>
+  <BildingDialog ref="dialogRef" @addGetList="addGetList"></BildingDialog>
 </template>
-<style lang="scss" scoped></style>
+<script setup lang="ts">
+import { ref, reactive } from "vue";
+// @ts-ignore
+import { getBuildingListApi, deleteBuildingApi } from "@/api/park/building";
+// @ts-ignore
+import BildingDialog from "./components/BildingDialog.vue";
+import { ElMessage, ElMessageBox } from "element-plus";
+import * as util from "@/utils/util";
+//添加模态框的数据源
+const state = reactive({
+  commonTableKey: util.guid(),
+  data: [
+    {
+      area: 99,
+      floors: 20,
+      id: 28,
+      name: "99",
+      propertyFeePrice: 999,
+      status: 0,
+    },
+  ],
+  page: {
+    pageIndex: 1,
+    pageSize: 10,
+    totalPage: 0,
+    totalRecord: 0,
+  },
+});
+let userch = ref({
+  name: "",
+});
+//请求表格数据方法
+const builist = () => {
+  getBuildingListApi({
+    page: state.page.pageIndex,
+    pageSize: state.page.pageSize,
+    name: userch.value.name,
+  }).then((res) => {
+    console.log("111", res);
+    state.page.totalRecord = res.data.total;
+    state.data = res.data.rows;
+  });
+};
+builist();
+//分页器部件二
+const sizeChangeHandle = (val: number) => {
+  console.log(val);
+  state.page.pageSize = val;
+  builist();
+};
+//分页器部件二
+const currentChangeHandle = (val: number) => {
+  state.page.pageIndex = val;
+  builist();
+};
+const jumperChangeHandle = (val: number) => {
+  console.log(`jumper page: ${val}`);
+};
+const selectionChangeHandle = (val: any[]) => {
+  console.log(`selection-change`, val);
+};
+const dialogRef = ref<InstanceType<typeof BildingDialog>>();
+const addBilding = () => {
+  dialogRef.value?.openDialog({
+    type: "add",
+    title: "添加楼宇",
+  });
+};
+const editBilding = (row: any) => {
+  dialogRef.value?.openDialog({
+    title: "编辑楼宇",
+    type: "edit",
+    row,
+  });
+};
+const addGetList = () => {
+  builist();
+};
+const deletabuilding = (id: number) => {
+  console.log(id, "id");
+  ElMessageBox.confirm("是否删除当前楼宇", "Warning", {
+    confirmButtonText: "确定",
+    cancelButtonText: "取消",
+    type: "warning",
+  }).then(async () => {
+    const res: any = await deleteBuildingApi(id);
+    console.log(res, "delres");
+    if (res.code == 10000) {
+      ElMessage({
+        type: "success",
+        message: res.msg,
+      });
+      builist();
+    } else {
+      ElMessage({
+        type: "error",
+        message: res.msg,
+      });
+    }
+  });
+};
+</script>
+<style scoped>
+.boss {
+  width: 100%;
+  height: 100%;
+  background: #fff;
+  padding: 20px;
+  box-sizing: border-box;
+}
+</style>

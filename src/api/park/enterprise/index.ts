@@ -2,7 +2,7 @@
  * @Author: 3396515303@qq.com 12267007+wangbing56@user.noreply.gitee.com
  * @Date: 2024-06-20 10:51:24
  * @LastEditors: 3396515303@qq.com 12267007+wangbing56@user.noreply.gitee.com
- * @LastEditTime: 2024-06-20 14:28:16
+ * @LastEditTime: 2024-06-20 19:44:42
  * @FilePath: \vue-project\src\api\park\enterprise\index.ts
  * @Description: 这是默认设置,请设置`customMade`, 打开koroFileHeader查看配置 进行设置: https://github.com/OBKoro1/koro1FileHeader/wiki/%E9%85%8D%E7%BD%AE
  */
@@ -28,7 +28,8 @@ export const uploadFileApi = (data: FormData) => request<any>("/upload", "POST",
     "Content-Type": "multipart/form-data"
   }
 })
-
+// 查询可租聘的楼宇
+export const getLouyuApi = (data?: any) => request('/park/rent/building', 'GET', data)
 // 新增企业接口
 export const addEnterpriseApi = (data: AddEnterRequestType) => request("/park/enterprise", "POST", data)
 
@@ -38,4 +39,5 @@ export const editEnterpriseApi = (id: number) => request<ViewResponseType>("/par
 
 //编辑企业接口
 export const editOkEnterpriseApi = (data: EditEnterRequestType) => request("/park/enterprise", "PUT", data)
-
+// 添加租聘合同
+export const addHeTongApi=(data:any)=>request('/park/enterprise/rent','POST',data)

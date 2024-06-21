@@ -1,6 +1,8 @@
 <script setup lang="ts">
 // 引入buildingHooks
 import { useBuildingHook } from './useEnterpriseHooks'
+import Contract from "./ContractDialog.vue"
+import {ref} from "vue"
 const {
   tableConfig,
   queryForm,
@@ -13,11 +15,16 @@ const {
   handleExpand,
   handleAdd,
   handleEdit,
-  handleView
+  handleView,
+  InitBuilding
 } = useBuildingHook()
-
-
-
+const dialogRef = ref<InstanceType<typeof Contract>>();
+const addContract=(id:any)=>{
+  dialogRef.value?.openDialog(id);
+}
+const getList=()=>{
+  InitBuilding()
+}
 </script>
 <template>
   <el-card>
@@ -93,12 +100,11 @@ const {
           </template>
         </el-table-column>
       </template>
-
       <template #status="{ row }">
         {{ row.status === 0 ? '空置中' : '租赁中' }}
       </template>
       <template #Controls="{ row }">
-        <el-button type="primary" link>添加合同</el-button>
+        <el-button type="primary" link  @click="addContract(row.id)">添加合同</el-button>
         <el-button type="primary" link @click="handleView(row.id)">查看</el-button>
         <el-button type="primary" link @click="handleEdit(row.id)">编辑</el-button>
         <el-button
@@ -122,5 +128,6 @@ const {
       />
     </el-row>
   </el-card>
+  <Contract ref="dialogRef" @getList='getList'></Contract>
 </template>
 <style lang="scss" scoped></style>

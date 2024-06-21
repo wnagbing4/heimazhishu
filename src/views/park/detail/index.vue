@@ -35,8 +35,8 @@ const tableConfig = {
     <el-card style="width: 100%">
       <div class="top flex-between">
         <div class="top-left flex-center" style="height: 30px">
-          <el-icon><Back /></el-icon>
-          <p style="margin: 0 10px" @click="$router.go(-1)">返回</p>
+          <el-icon style="cursor: pointer"><Back /></el-icon>
+          <p style="margin: 0 10px; cursor: pointer" @click="$router.go(-1)">返回</p>
           |
           <span style="margin-left: 5px"> 查看企业</span>
         </div>
@@ -94,7 +94,7 @@ const tableConfig = {
 <style lang="scss" scoped>
 .park-add {
   width: 100%;
-  height: calc(100vh - 70px);
+  height: calc(100% - 70px);
   background-color: #f4f6f8;
 }
 .card-bottom {
