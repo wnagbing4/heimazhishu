@@ -61,3 +61,17 @@ export const getDetailApi = (data: any) => {
 export const renewMounthCardApi = (data: any) => {
   return request('/parking/card/recharge', 'POST', data)
 }
+//-----------------------------------------------------------------------------------------------------------------
+/**
+ *   停车缴费列表查询接口
+ */
+export const getPaymentApi=(data:any)=>{
+   return request('/parking/payment/list','GET',data)
+}
+// ------------------------------------------------------------------------------------------------------------------
+/**
+ * 获取计费规则列表
+ */
+export const getRuleListApi=(data:any)=>{
+   return request('/parking/rule/list','GET',data)
+}
