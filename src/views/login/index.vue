@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { loginApi } from '@/api/login'
 import type { LoginRequestType } from '@/api/login/types'
-import type { FormInstance, FormRules } from 'element-plus'
+import { ElNotification, type FormInstance, type FormRules } from 'element-plus'
 
 // 跳转
 const router = useRouter()

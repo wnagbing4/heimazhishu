@@ -38,7 +38,7 @@ service.interceptors.response.use(
       let message: string = ""
       switch (error.response.status) {
         case 400:
-          message = "请求错误"
+          message = error.response.data.msg
           break
         case 401:
           message = "未授权，请登录"

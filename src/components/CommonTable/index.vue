@@ -112,6 +112,7 @@ watch(
       ref="tableRef"
       :data="props.data"
       v-loading="state.loading"
+        row-key="id"
       @selection-change="selectionChangeHandle"
     >
       <el-table-column
@@ -121,7 +122,7 @@ watch(
         width="50"
         fixed
       />
-      
+
       <el-table-column label="序号" align="center" width="75" fixed>
         <template #default="scope">
           <span ref="indexRef">
@@ -142,7 +143,7 @@ watch(
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
     >
-     
+
       <template #default>
         <span class="el-pagination__jump">
           <span class="el-pagination__goto">跳转</span>
