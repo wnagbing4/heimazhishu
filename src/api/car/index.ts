@@ -65,13 +65,31 @@ export const renewMounthCardApi = (data: any) => {
 /**
  *   停车缴费列表查询接口
  */
-export const getPaymentApi=(data:any)=>{
-   return request('/parking/payment/list','GET',data)
+export const getPaymentApi = (data: any) => {
+  return request('/parking/payment/list', 'GET', data)
 }
 // ------------------------------------------------------------------------------------------------------------------
 /**
  * 获取计费规则列表
  */
-export const getRuleListApi=(data:any)=>{
-   return request('/parking/rule/list','GET',data)
+export const getRuleListApi = (data: any) => {
+  return request('/parking/rule/list', 'GET', data)
+}
+// 添加计费规则列表
+export const addRuleApi=(data:any)=>{
+  return request('/parking/rule','POST',data)
+}
+// 获取计费规则下拉列比饿哦
+export const getRulesListApi=(data?:any)=>{
+return request("/parking/rule/dropList",'GET',data)
+}
+export const getDetailListApi=(data:number)=>{
+    return request(`/parking/rule/${data}`,'GET')
+}
+export const editRulesApi=(data:any)=>{
+  return request('/parking/rule','PUT',data)
+}
+// /parking/rule/{id}
+export const delRulesApi=(data:any)=>{
+  return request(`/parking/rule/${data}`,'DELETE')
 }

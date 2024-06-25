@@ -1,7 +1,7 @@
 <template>
   <div class="billing_box">
     <div class="button_box">
-      <el-button>增加停车计费规则</el-button>
+      <el-button @click="addBilling">增加停车计费规则</el-button>
     </div>
     <ICommonTable
       ref="commonTableRef"
@@ -29,19 +29,24 @@
       </el-table-column>
       <el-table-column prop="ruleNameView" label="计费规则" />
       <el-table-column label="操作">
-        <template #default>
-          <el-button link type="primary" size="small"> 编辑 </el-button>
-          <el-button link type="primary" size="small">删除</el-button>
+        <template #default="scope">
+          <el-button link type="primary" size="small" @click="editRule(scope.row.id)"> 编辑 </el-button>
+          <el-button link type="primary" size="small" @click="del(scope.row.id)">删除</el-button>
         </template>
       </el-table-column>
     </ICommonTable>
   </div>
+  <!-- 弹窗组件 -->
+  <billingDialog ref="dialogRef" @getListApi="getListApi"></billingDialog>
 </template>
 <script setup lang="ts">
-import { reactive } from "vue";
+import { reactive,ref } from "vue";
 // @ts-ignore
 import * as util from "@/utils/util";
-import {getRuleListApi} from "@/api/car"
+// @ts-ignore
+import {getRuleListApi,delRulesApi} from "@/api/car"
+import billingDialog from "./components/billingDialog.vue"
+import { ElMessage, ElMessageBox } from "element-plus";
 const sizeChangeHandle = (val: number) => {
   console.log(val);
   state.page.pageSize = val;
@@ -81,6 +86,41 @@ const getRuleList=async ()=>{
    state.page.totalRecord=res.data.total
 }
 getRuleList()
+const getListApi=()=>{
+  getRuleList()
+}
+// 添加
+const dialogRef = ref<InstanceType<typeof billingDialog>>();
+const addBilling=()=>{
+  dialogRef.value?.openDialog({
+    title:'添加计费规则',
+    type:'add',
+  })
+}
+// 修改
+const editRule=(id:number)=>{
+  dialogRef.value?.openDialog({
+    title:'修改计费规则',
+    type:'edit',
+    id:id
+  })
+}
+// 删除
+const del=(id:number)=>{
+   ElMessageBox.confirm('是否确认删除当前计费规则?', {
+    confirmButtonText: '确定',
+    cancelButtonText: '取消',
+    type: 'warning',
+  }).then(async () => {
+    // 删除
+    const res=await delRulesApi(id)
+    console.log(res,'del');
+    if(res.code===10000){
+      ElMessage.success('删除成功')
+      getRuleList()
+    }
+  })
+}
 </script>
 
 <style lang="scss" scoped>
