@@ -61,7 +61,9 @@ onMounted(() => {
   }, 500);
   addEventListener(`resize`, init);
 });
-
+const loading = computed(() => {
+  return props.data && props.data.length > 0 ? false : true;
+});
 const sizeChangeHandle = (val: number) => {
   emits(`size-change`, val);
 };
@@ -111,8 +113,8 @@ watch(
     <el-table
       ref="tableRef"
       :data="props.data"
-      v-loading="state.loading"
-        row-key="id"
+      v-loading="loading"
+      row-key="id"
       @selection-change="selectionChangeHandle"
     >
       <el-table-column
@@ -130,6 +132,11 @@ watch(
           </span>
         </template>
       </el-table-column>
+      <template #empty>
+         <div>
+          <img src="@/assets/table.png" alt="">
+         </div>
+      </template>
       <slot />
     </el-table>
 
@@ -143,7 +150,6 @@ watch(
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
     >
-
       <template #default>
         <span class="el-pagination__jump">
           <span class="el-pagination__goto">跳转</span>

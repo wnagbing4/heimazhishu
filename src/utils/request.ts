@@ -17,7 +17,7 @@ service.interceptors.request.use(
     if (token) {
       config.headers!.Authorization = token
     }
-    ElLoading.service({ fullscreen: true ,text: "疯狂加载中……"})
+    // ElLoading.service({ fullscreen: true ,text: "疯狂加载中……"})
     return config
   },
   (error: AxiosError) => {
@@ -28,7 +28,7 @@ service.interceptors.request.use(
 // 响应拦截器
 service.interceptors.response.use(
   (response: AxiosResponse) => {
-    ElLoading.service({ fullscreen: true ,text: "疯狂加载中^"}).close()
+    // ElLoading.service({ fullscreen: true ,text: "疯狂加载中^"}).close()
     return response.data
   },
   (error: AxiosError) => {
@@ -64,7 +64,7 @@ service.interceptors.response.use(
           break
       }
       ElMessage.error(message)
-      ElLoading.service({ fullscreen: true ,text: "疯狂加载中^"}).close()
+      // ElLoading.service({ fullscreen: true ,text: "疯狂加载中^"}).close()
       return Promise.reject(error)
     }
   }

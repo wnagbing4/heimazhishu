@@ -24,14 +24,7 @@ import * as util from "@/utils/util";
 const state = reactive({
   commonTableKey: util.guid(),
   data: [
-    {
-      area: 99,
-      floors: 20,
-      id: 28,
-      name: "99",
-      propertyFeePrice: 999,
-      status: 0,
-    },
+   
   ],
   page: {
     pageIndex: 1,

@@ -42,16 +42,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 //添加模态框的数据源
 const state = reactive({
   commonTableKey: util.guid(),
-  data: [
-    {
-      area: 99,
-      floors: 20,
-      id: 28,
-      name: "99",
-      propertyFeePrice: 999,
-      status: 0,
-    },
-  ],
+  data: [],
   page: {
     pageIndex: 1,
     pageSize: 10,
@@ -59,7 +50,6 @@ const state = reactive({
     totalRecord: 0,
   },
 });
-
 
 //分页器部件二
 const sizeChangeHandle = (val: number) => {
