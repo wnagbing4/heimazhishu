@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Loading } from "element-plus/es/components/loading/src/service";
 import {
   ref,
   onMounted,
@@ -22,6 +23,10 @@ const props = defineProps({
   selection: {
     type: Boolean,
     default: () => false,
+  },
+  Loading:{
+    type:Boolean,
+    default:()=>false
   },
   page: {
     type: Object,
@@ -52,18 +57,18 @@ const props = defineProps({
 
 const state = reactive({
   height: 0,
-  loading: true,
+  loading: false,
 });
 
 onMounted(() => {
-  setTimeout(() => {
-    state.loading = false;
-  }, 500);
+  // setTimeout(() => {
+  //   state.loading = false;
+  // }, 500);
   addEventListener(`resize`, init);
 });
-const loading = computed(() => {
-  return props.data && props.data.length > 0 ? false : true;
-});
+// const loading  = computed(() => {
+//   return props.data && props.data.length > 0 ? false : true;
+// });
 const sizeChangeHandle = (val: number) => {
   emits(`size-change`, val);
 };
@@ -113,7 +118,7 @@ watch(
     <el-table
       ref="tableRef"
       :data="props.data"
-      v-loading="loading"
+      v-loading=" props.Loading "
       row-key="id"
       @selection-change="selectionChangeHandle"
     >
@@ -133,19 +138,18 @@ watch(
         </template>
       </el-table-column>
       <template #empty>
-         <div>
-          <img src="@/assets/table.png" alt="">
-         </div>
+        <div>
+          <img src="@/assets/table.png" alt="" />
+        </div>
       </template>
       <slot />
     </el-table>
-
     <el-pagination
       ref="paginationRef"
       :current-page="props.page.pageIndex"
       :page-size="props.page.pageSize"
       :page-sizes="props.pageSizes"
-      layout="prev, pager, next, sizes, slot"
+      layout="total,prev, pager, next, sizes, slot"
       :total="props.page.totalRecord"
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
@@ -160,11 +164,12 @@ watch(
             :controls="false"
             :style="{ width: `56px` }"
             @update:model-value="(val: number) => userInput = +val"
+            @blur="jumperChangeHandle"
           />
           <span class="el-pagination__classifier">页</span>
-          <span @click="jumperChangeHandle" class="el-pagination__jumper-button"
+          <!-- <span  class="el-pagination__jumper-button"
             >跳转</span
-          >
+          > -->
         </span>
       </template>
     </el-pagination>

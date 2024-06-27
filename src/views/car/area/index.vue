@@ -7,6 +7,7 @@
       ref="commonTableRef"
       :data="state.data"
       :page="state.page"
+      :Loading="state.Loading"
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
       @jumper-change="jumperChangeHandle"
@@ -43,6 +44,7 @@ import { ElMessage, ElMessageBox } from "element-plus";
 const state = reactive({
   commonTableKey: util.guid(),
   data: [],
+  Loading:false,
   page: {
     pageIndex: 1,
     pageSize: 10,
@@ -70,6 +72,7 @@ const selectionChangeHandle = (val: any[]) => {
 };
 //请求表格数据方法
 const getListData = async () => {
+   state.Loading=true
   const res: any = await getList({
     page: state.page.pageIndex,
     pageSize: state.page.pageSize,
@@ -77,6 +80,7 @@ const getListData = async () => {
   state.data = res.data.rows;
   state.page.totalRecord = res.data.total;
   state.page.totalPage = res.data.total;
+  state.Loading=false
 };
 getListData();
 const dialogRef = ref<InstanceType<typeof AreaDialog>>();

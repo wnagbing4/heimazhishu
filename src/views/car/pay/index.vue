@@ -26,6 +26,7 @@
     ref="commonTableRef"
     :data="state.data"
     :page="state.page"
+    :Loading='state.Loading'
     @size-change="sizeChangeHandle"
     @current-change="currentChangeHandle"
     :key="state.commonTableKey"
@@ -65,7 +66,7 @@ import { getPaymentApi } from "@/api/car";
 const state = reactive({
   commonTableKey: util.guid(),
   data: [
-  
+
   ],
   page: {
     pageIndex: 1,
@@ -73,6 +74,7 @@ const state = reactive({
     totalPage: 0,
     totalRecord: 0,
   },
+  Loading:false
 });
 interface optionsType{
   value:string,
@@ -114,11 +116,13 @@ const currentChangeHandle = (val: number) => {
   getGayList()
 };
 const getGayList=async ()=>{
+  state.Loading=true
   const res=await getPaymentApi(searchForm.value)
   console.log(res);
   state.data=res.data.rows
   state.page.totalPage=res.data.total
   state.page.totalRecord=res.data.total
+  state.Loading=false
 }
 getGayList()
 </script>

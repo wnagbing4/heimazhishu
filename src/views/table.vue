@@ -4,6 +4,7 @@
     ref="commonTableRef"
     :data="state.data"
     :page="state.page"
+    :Loading="state.Loading"
     @size-change="sizeChangeHandle"
     @current-change="currentChangeHandle"
     @jumper-change="jumperChangeHandle"
@@ -24,17 +25,15 @@ import * as util from "@/utils/util";
 const state = reactive({
   commonTableKey: util.guid(),
   data: [
-   
+
   ],
+  Loading:false,
   page: {
     pageIndex: 1,
     pageSize: 10,
     totalPage: 0,
     totalRecord: 0,
   },
-});
-let userch = ref({
-  name: "",
 });
 //请求表格数据方法
 

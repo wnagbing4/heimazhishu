@@ -16,7 +16,8 @@ const {
   handleAdd,
   handleEdit,
   handleView,
-  InitBuilding
+  InitBuilding,
+  loading
 } = useBuildingHook()
 const dialogRef = ref<InstanceType<typeof Contract>>();
 const addContract=(id:any)=>{
@@ -48,6 +49,7 @@ const getList=()=>{
       @expand-change="handleExpand"
       v-bind="tableConfig"
       v-model="tableData"
+      :loading="loading"
     >
       <!-- 展开行  -->
       <template #expand>

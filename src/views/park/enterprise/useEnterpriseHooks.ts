@@ -44,6 +44,7 @@ export const useBuildingHook = () => {
       "row-key":"id"
     }
   }
+  const loading=ref(false)
   // 列表请求参数
   const queryForm = ref<BuildingRequestType>({
     pageSize: '10',
@@ -55,10 +56,13 @@ export const useBuildingHook = () => {
   const total = ref<number>(0)
   // 初始化菜单列表数据
   const InitBuilding = async () => {
+    loading.value=true
     const res = await getEnterpriseListApi(queryForm.value)
     // console.log('res', res)
     tableData.value = res?.data.rows
     total.value = res?.data.total
+    loading.value=false
+
   }
   InitBuilding()
   // 查询列表
@@ -151,6 +155,7 @@ const handleView = (id:number) => {
     handleExpand,
     handleAdd,
     handleEdit,
-    handleView
+    handleView,
+    loading
   }
 }

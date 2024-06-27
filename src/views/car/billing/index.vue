@@ -7,6 +7,7 @@
       ref="commonTableRef"
       :data="state.data"
       :page="state.page"
+      :Loading="state.Loading"
       @size-change="sizeChangeHandle"
       @current-change="currentChangeHandle"
       :key="state.commonTableKey"
@@ -61,6 +62,7 @@ const state = reactive({
   commonTableKey: util.guid(),
   data: [
   ],
+  Loading:false,
   page: {
     pageIndex: 1,
     pageSize: 10,
@@ -69,6 +71,7 @@ const state = reactive({
   },
 });
 const getRuleList=async ()=>{
+  state.Loading=true
    const res=await getRuleListApi({
     page:1,
     pageSize:10
@@ -76,6 +79,7 @@ const getRuleList=async ()=>{
    state.data=res.data.rows
    state.page.totalPage=res.data.total
    state.page.totalRecord=res.data.total
+   state.Loading=false
 }
 getRuleList()
 const getListApi=()=>{
@@ -113,6 +117,8 @@ const del=(id:number)=>{
     }
   })
 }
+
+
 </script>
 
 <style lang="scss" scoped>

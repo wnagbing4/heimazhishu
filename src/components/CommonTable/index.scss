@@ -2,7 +2,7 @@
     flex: 1;
     height: 0;
     padding: 0 24px 0;
-  
+
     .common-table__header {
       padding-top: 16px;
       :deep(.el-button) {
@@ -18,10 +18,10 @@
         // rgba(34, 184, 208, 1)
       }
     }
-  
+
     :deep(.el-table) {
-      --el-table-header-bg-color: rgba(242, 243, 245, 1);
-      --el-table-header-text-color: rgba(29, 33, 41, 1);
+      --el-table-header-bg-color:  #f4f6f8;
+      --el-table-header-text-color:#909399;
       .cell {
         white-space: nowrap;
       }
@@ -29,7 +29,7 @@
         height: 40px;
         padding: 0;
       }
-  
+
       .el-button {
         // height: 24px;
         // font-size: 12px;
@@ -42,14 +42,14 @@
         }
       }
     }
-  
+
     .el-pagination {
       // padding-top: 20px;
       // justify-content: flex-end;
       justify-content: flex-end;
       height: 52px;
       align-items: flex-end;
-  
+
       .el-pagination__jumper-button {
         border-radius: 2px;
         background-color: rgba(34, 184, 208, 1);

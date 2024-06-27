@@ -6,10 +6,11 @@ defineProps<{
   modelValue: any[]
   // 表格样式
   tableStyle?: any
+  loading?:boolean
 }>()
 </script>
 <template>
-  <el-table :data="modelValue" v-bind="tableStyle" :style="tableStyle">
+  <el-table :data="modelValue" v-bind="tableStyle" v-loading="loading" :style="tableStyle">
     <template v-for="(item, index) in columnsConfig" :key="index">
       <!-- type为index时候渲染的渲染 -->
       <el-table-column

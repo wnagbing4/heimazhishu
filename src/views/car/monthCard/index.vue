@@ -29,6 +29,7 @@
     <ICommonTable
       ref="commonTableRef"
       :data="state.data"
+      :Loading="state.Loading"
       :selection="true"
       :page="state.page"
       @size-change="sizeChangeHandle"
@@ -75,14 +76,16 @@ const router = useRouter();
 const state = reactive({
   commonTableKey: util.guid(),
   data: [
-   
+
   ],
+
   page: {
     pageIndex: 1,
     pageSize: 10,
     totalPage: 0,
     totalRecord: 0,
   },
+  Loading:false
 });
 //分页器部件二
 const sizeChangeHandle = (val: number) => {
@@ -113,11 +116,13 @@ const getProportion = async () => {
 getProportion();
 // 获取用户列表
 const getMounthCardList = async () => {
-  const res = await getMounthCardListApi();
+  state.Loading=true
+  const res = await getMounthCardListApi({});
   console.log(res);
   state.data = res.data.rows;
   state.page.totalPage = res.data.total;
   state.page.totalRecord = res.data.total;
+  state.Loading=false
 };
 getMounthCardList();
 const addAreaCard = () => {
