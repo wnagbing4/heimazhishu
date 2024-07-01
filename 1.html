@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <div id="test"></div>
+    <script
+      src="https://unpkg.com/react@18/umd/react.development.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"
+      crossorigin
+    ></script>
+
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    <script type="text/babel">
+      class Weather extends React.Component {
+        constructor(props) {
+          super(props)
+          this.state = { isHot: false }
+          this.changeWeather=this.changeWeather.bind(this)
+        }
+        render() {
+          const { isHot } = this.state
+          return <h1 onClick={this.changeWeather}> 今天天气很{isHot ? '炎热' : '凉爽'}</h1>
+
+        }
+        changeWeather(){
+          // changeWeather放在了哪里？—— Weather的原型对象上，供实例使用
+          // 由于changeWeather是作为onClick的回调，所以不是通过实例调用的，是直接调用
+          // 类中的方法默认开启了局部的严格模式，所以changeWeather中的this为undefined
+          // console.log(this.state.isHot);
+          // 状态不可直接更改，需要借助内置api进行更改
+         const isHot=this.state.isHot
+         this.setState({isHot:!isHot})
+          // this.state.isHot=!isHot
+          console.log(this.state.isHot);
+        }
+      }
+      ReactDOM.render(<Weather />, document.getElementById('test'))
+    </script>
+  </body>
+</html>
