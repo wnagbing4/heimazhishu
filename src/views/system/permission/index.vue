@@ -3,7 +3,8 @@ import { ref, reactive, onMounted } from "vue";
 import type { TabsPaneContext } from "element-plus";
 import { getRoleLeftLost, getRoleTreeLost, addLeftAPI } from "@/api/system";
 import { ElTree } from "element-plus";
-
+import {useRouter} from 'vue-router'
+const router=useRouter()
 onMounted(() => {
   if (checkedData.value.length == 0) {
     selectOption(2);
@@ -37,31 +38,16 @@ getallList();
 const checkedData = ref([]);
 const selectOption = async (index) => {
   const res = await addLeftAPI(index);
-  // checkedData.value = res.data.perms
-  selection(res.data.perms);
-  // res.data.perms.forEach((item) => {
-  //   // checkedData.value = item
-  //   if (item.length > 0) {
-  //     item.forEach((item1) => {
-  //       checkedData.value.push(item1)
-  //     })
-  //   }
-  // })
-  // console.log(checkedData.value)
-};
-const selection = (data: any) => {
-  const arr = [];
-  data.forEach((item: any) => {
-    // console.log(item)
+  checkedData.value =[]
+  res.data.perms.forEach((item) => {
+    // checkedData.value = item
     if (item.length > 0) {
-      item.forEach((item1: any) => {
-        arr.push(item1);
-      });
-      // checkedData.value=arr
-      arr.forEach((item2) => checkedData.value.push(item2));
-      // arr=[]
+      item.forEach((item1) => {
+        checkedData.value.push(item1)
+      })
     }
-  });
+  })
+  // console.log(checkedData.value)
 };
 
 // 右侧tab
@@ -69,7 +55,10 @@ const defaultProps = {
   children: "children",
   label: "title",
 };
-
+// 添加
+const addRole=()=>{
+  router.push('/system/role/add')
+}
 const activeName = ref("first");
 
 const handleClick = (tab: TabsPaneContext, event: Event) => {
@@ -102,6 +91,7 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
               </el-dropdown>
             </el-menu-item>
           </template>
+          <el-button style="width: 100%" @click="addRole">添加角色</el-button>
         </el-menu>
       </el-col>
     </div>

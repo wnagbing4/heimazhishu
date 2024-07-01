@@ -21,6 +21,9 @@ const options = ref([{
           <el-option v-for="item in options" :key="item.value" :value="item.value" :label="item.label" />
         </el-select>
       </el-form-item>
+      <el-form-item>
+        <el-button type="primary" style="background:#7094ff;">查询</el-button>
+      </el-form-item>
     </el-form>
   </div>
 </template>
