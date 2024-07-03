@@ -5,11 +5,14 @@ const logout = () => {
   localStorage.removeItem("token")
   $router.push('/login')
 }
+const goScreen=()=>{
+  $router.push('/bigscreen/home')
+}
 </script>
 
 <template>
   <el-header class="layout-header">
-    <el-button style="margin-right: 10px;" size="small" type="primary" plain>可视化大屏</el-button>
+    <el-button style="margin-right: 10px;" size="small" type="primary" plain @click="goScreen">可视化大屏</el-button>
     <el-dropdown>
       <span class="el-dropdown-link" style="font-weight: 600;color: black;outline: none">
         黑马管理员

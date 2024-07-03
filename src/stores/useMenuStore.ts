@@ -12,6 +12,7 @@ export const useMenuStore = defineStore('menu', () => {
   const getMenuList = async () => {
     const res = await menuListApi()
     // console.log(res);
+    // @ts-ignore
     menuList.value = res!.data
     return res!.data
   }

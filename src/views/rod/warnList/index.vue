@@ -4,6 +4,9 @@ import { ref, reactive } from "vue";
 // /pole/warning/list
 import { request } from "@/utils/request";
 import * as util from "@/utils/util";
+import { ElMessage, ElMessageBox } from "element-plus";
+import { useRouter } from "vue-router";
+const router=useRouter()
 //添加模态框的数据源
 const state = reactive({
   commonTableKey: util.guid(),
@@ -46,10 +49,55 @@ const getList=async ()=>{
   }
 }
 getList()
+const getSearch=async (data?:any)=>{
+  state.Loading = true;
+  const res=await request("/pole/warning/list",'GET',data)
+  if(res.code===10000){
+    state.data=res.data.rows
+    state.page.totalPage=res.data.total
+    state.page.totalRecord=res.data.total
+    state.Loading=false
+  }
+}
+const del=(id:number)=>{
+  ElMessageBox.confirm(
+    '是否确认删除当前告警记录?',
+    {
+      confirmButtonText: '确定',
+      cancelButtonText: '取消',
+      type: 'warning',
+    }
+  )
+    .then(async() => {
+      const res=await request(`/pole/warning/${id}`,'DELETE')
+      if(res.code===10000){
+        ElMessage({
+          type: 'success',
+          message: '删除成功',
+        })
+        getList()
+      }else {
+        ElMessage({
+          type:'error',
+          message:res.msg
+        })
+      }
+
+    })
+}
+const detail= (id:number)=>{
+    router.push({
+      path:'/warn/detail',
+     query:{
+       id:id
+     }
+    })
+
+}
 </script>
 <template>
 <div class="search">
-  <Search></Search>
+  <Search @getSearch="getSearch"></Search>
 </div>
   <ICommonTable
     ref="commonTableRef"
@@ -71,12 +119,12 @@ getList()
         <span v-if="scope.row.handleStatus===3">已完成</span>
       </template>
     </el-table-column>
-    <el-table-column prop="area" label="warningTime" />
+    <el-table-column prop="warningTime" label="告警时间" />
     <el-table-column  label="操作" >
       <template #default="scope">
         <el-button type="primary" link :disabled="scope.row.handleStatus!=0">派单</el-button>
-        <el-button type="primary" link>详情</el-button>
-        <el-button type="primary" link :disabled="scope.row.handleStatus!=3">删除</el-button>
+        <el-button type="primary" link @click="detail(scope.row.id)">详情</el-button>
+        <el-button type="primary" link :disabled="scope.row.handleStatus!=3" @click="del(scope.row.id)">删除</el-button>
       </template>
     </el-table-column>
   </ICommonTable>

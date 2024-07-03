@@ -3,6 +3,7 @@ import type { RouteRecordRaw, Router } from "vue-router";
 import { useMenuStore } from "@/stores/useMenuStore"
 
 // 获取动态路由
+// @ts-ignore
 const moduleRoutes = import.meta.glob("./modules/*.ts", { eager: true })
 type moduleRouteType = {
   default: RouteRecordRaw

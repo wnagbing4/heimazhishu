@@ -14,7 +14,6 @@ onMounted(() => {
 const setmenu = ref();
 // 右侧
 const seright = ref();
-const treeRef = ref<InstanceType<typeof ElTree>>();
 const getallList = () => {
   Promise.all([getRoleLeftLost(), getRoleTreeLost()]).then((res: any) => {
     if (res.length > 0) {
@@ -36,16 +35,13 @@ const getallList = () => {
 getallList();
 // 左侧数据操作
 const checkedData = ref([]);
+const treeRef:any = ref<InstanceType<typeof ElTree>>()
 const selectOption = async (index) => {
   const res = await addLeftAPI(index);
-  checkedData.value =[]
-  res.data.perms.forEach((item) => {
-    // checkedData.value = item
-    if (item.length > 0) {
-      item.forEach((item1) => {
-        checkedData.value.push(item1)
-      })
-    }
+  checkedData.value = res.data.perms
+  const treeComponentList = treeRef.value
+  treeComponentList?.forEach((tree: any, index: number) => {
+    tree.setCheckedKeys(checkedData.value[index])
   })
   // console.log(checkedData.value)
 };
@@ -101,19 +97,8 @@ const handleClick = (tab: TabsPaneContext, event: Event) => {
           <div class="authority">
             <div class="authchilerd" v-for="item in seright" :key="item.id">
               <div class="yaun">{{ item.title }}</div>
-              <el-tree
-                style="max-width: 600px; margin-top: 10px; color: gray"
-                :data="item.children"
-                show-checkbox
-                ref="treeRef"
-                node-key="id"
-                :disabled="item.disabled"
-                :checked="item.checked"
-                default-expand-all
-                :default-expanded-keys="[2, 3]"
-                :default-checked-keys="checkedData"
-                :props="defaultProps"
-              />
+              <el-tree ref="treeRef" :props="{ label: 'title' }"  :expand-on-click-node="false" :data="item.children" show-checkbox
+                       :default-expand-all="true" node-key="id" />
             </div>
           </div>
         </el-tab-pane>

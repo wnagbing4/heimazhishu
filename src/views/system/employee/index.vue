@@ -3,7 +3,9 @@ import search from './component/search.vue'
 import { ref, reactive } from 'vue'
 // @ts-ignore
 import * as util from '@/utils/util'
-import { getEmployeeListApi } from '@/api/employee'
+import addEmployee from './component/addEmployee.vue'
+import { getEmployeeListApi,getDetailApi ,deleteRoleApi, resetPasswordApi} from '@/api/employee'
+import { ElMessage, ElMessageBox } from 'element-plus'
 // 定义搜搜的数据
 const searchName = ref('')
 //添加模态框的数据源
@@ -50,13 +52,67 @@ const getSearch = (name: string) => {
   searchName.value = name
   getEmployeeList()
 }
+const dialogRef = ref<InstanceType<typeof addEmployee>>();
+const add=()=>{
+  dialogRef.value?.openDialog({
+    title: "添加员工",
+    type: "add",
+  });
+}
+
+const edit=async (id)=>{
+  const res=await getDetailApi(id)
+  console.log(res,'detail');
+  dialogRef.value?.openDialog({
+    title: "编辑员工",
+    type: "edit",
+    id:id,
+    detailData:res.data
+  });
+}
+const del=(id:any)=>{
+   ElMessageBox.confirm('确定要删除吗？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          const res=await deleteRoleApi(id)
+          if(res.code===10000){
+            ElMessage({
+              type: 'success',
+              message: '删除成功'
+            })
+            getEmployeeList()
+          }
+        })
+}
+// 重置密码
+const resetPassword=(id:any)=>{
+  ElMessageBox.confirm('确定将密码重置为“123456”？', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(async () => {
+          const res=await resetPasswordApi({id:id})
+          if(res.code===10000){
+            ElMessage({
+              type: 'success',
+              message: res.msg
+            })
+            getEmployeeList()
+          }
+        })
+}
+const getList=()=>{
+  getEmployeeList()
+}
 </script>
 <template>
   <div class="search">
     <search @getSearch="getSearch"></search>
   </div>
   <div class="button">
-    <el-button type="primary"> 添加员工</el-button>
+    <el-button type="primary" @click="add"> 添加员工</el-button>
   </div>
   <!--员工管理-->
   <ICommonTable
@@ -79,13 +135,14 @@ const getSearch = (name: string) => {
     </el-table-column>
     <el-table-column prop="createTime" label="添加时间" />
     <el-table-column label="操作">
-      <template #default>
-        <el-button type="primary" link>编辑</el-button>
-        <el-button type="primary" link>删除</el-button>
-        <el-button type="primary" link>重置密码</el-button>
+      <template #default="scope">
+        <el-button type="primary" link @click="edit(scope.row.id)">编辑</el-button>
+        <el-button type="primary" link @click="del(scope.row.id)">删除</el-button>
+        <el-button type="primary" link @click="resetPassword(scope.row.id)">重置密码</el-button>
       </template>
     </el-table-column>
   </ICommonTable>
+  <addEmployee ref="dialogRef" @getList='getList'></addEmployee>
 </template>
 <style lang='scss' scoped>
 .search {

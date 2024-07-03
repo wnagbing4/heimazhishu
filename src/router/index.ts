@@ -4,6 +4,7 @@ import { StaticRoutes } from "./staticRoute"
 import { staticRouteApi } from "./permission"
 
 const router = createRouter({
+  // @ts-ignore
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: StaticRoutes
 })

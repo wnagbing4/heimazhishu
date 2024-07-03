@@ -20,6 +20,11 @@ export const StaticRoutes: RouteRecordRaw[] = [
     ]
   },
   {
+    path: "/bigscreen/home",
+    name: "bigscreen",
+    component: () => import("@/zsScreen/index.vue"),
+  },
+  {
     path: "/:pathMatch(.*)*",
     name: "NotFound",
     component: () => import("@/views/404/index.vue")
