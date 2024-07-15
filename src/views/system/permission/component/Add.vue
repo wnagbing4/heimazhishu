@@ -20,7 +20,12 @@ const back = () => {
 }
 // 点击下一步
 const go=()=>{
-   goStatus.value=2
+   if(goStatus.value<=3){
+    goStatus.value= goStatus.value+1
+   }
+}
+const backStatus=()=>{
+  goStatus.value=goStatus.value-1
 }
 </script>
 
@@ -37,9 +42,9 @@ const go=()=>{
     <div class="center">
       <div style="height: 300px; max-width: 600px;margin-left: 30px;margin-top:30px">
         <el-steps direction="vertical" :active="goStatus">
-          <el-step />
-          <el-step />
-          <el-step />
+          <el-step title="角色信息"/>
+          <el-step title="权限信息"/>
+          <el-step title="检查并完成"/>
         </el-steps>
       </div>
       <div class="centerLeft">
@@ -58,11 +63,16 @@ const go=()=>{
           </el-form>
         </div>
       </div>
+      <div class="tree_box">
+        <el-tree
 
+        />
+      </div>
     </div>
     <div class="button">
-      <el-button v-if="goStatus!=1" type="primary">上一步</el-button>
-      <el-button type="primary" @click="go">下一步</el-button>
+      <el-button v-if="goStatus!=1"  @click="backStatus">上一步</el-button>
+      <el-button type="primary" v-if="goStatus!=3" @click="go">下一步</el-button>
+      <el-button v-if="goStatus==3" type="primary">确认添加</el-button>
     </div>
   </div>
 
